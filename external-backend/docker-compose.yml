@@ -1,0 +1,19 @@
+services:
+
+  external-backend:
+    image: external-backend:latest
+    environment:
+      ENVIRONMENT: prod
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PASSWORD: guest
+      RABBITMQ_USERNAME: guest
+      OTLP_ENDPOINT: otel-collector:4318
+      GRPC_PORT: 8100
+    ports:
+      - 8000:8000
+      - 8888:8888
+    depends_on:
+      - rabbitmq
+    links:
+      - rabbitmq
+    restart: on-failure
