@@ -3,7 +3,7 @@ package handlers
 import (
 	"common/model"
 	"errors"
-	"external_backend/service/mocks"
+	"external-backend/service/mocks"
 	"net/http"
 	"net/http/httptest"
 	"strings"

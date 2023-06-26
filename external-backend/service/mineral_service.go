@@ -4,9 +4,15 @@ import (
 	"common/model"
 	"common/observability/tracing"
 	"context"
-	"external_backend/queue"
+	"external-backend/queue"
+	"sync"
 
 	"go.opentelemetry.io/otel/trace"
+)
+
+var (
+	mineralServiceOnce     sync.Once
+	mineralServiceInstance *mineralService
 )
 
 type MineralService interface {
@@ -18,11 +24,14 @@ type mineralService struct {
 	publisher queue.MineralPublisher
 }
 
-func NewMineralService() MineralService {
-	return &mineralService{
-		tracer:    tracing.GetTracer(),
-		publisher: queue.NewMineralPublisher(),
-	}
+func GetMineralService() MineralService {
+	mineralServiceOnce.Do(func() {
+		mineralServiceInstance = &mineralService{
+			tracer:    tracing.GetTracer(),
+			publisher: queue.NewMineralPublisher(),
+		}
+	})
+	return mineralServiceInstance
 }
 
 func (s mineralService) AddMineral(ctx context.Context, mineral model.Mineral) error {

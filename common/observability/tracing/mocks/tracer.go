@@ -2,6 +2,7 @@ package tracing_mocks
 
 import (
 	"context"
+
 	"go.opentelemetry.io/otel/trace"
 )
 

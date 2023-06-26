@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package grpc;
+
+option go_package = "./";
+
+message UUID {
+  string value = 1;
+}
+
+message MineralDto {
+  string name = 1;
+}
+
+message MineralResult {
+  string result = 1;
+}
+
+service MineralService {
+
+  rpc SendStreaming(stream MineralDto) returns (MineralResult) {}
+}

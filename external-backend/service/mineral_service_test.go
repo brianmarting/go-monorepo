@@ -5,7 +5,7 @@ import (
 	tracing_mocks "common/observability/tracing/mocks"
 	"context"
 	"errors"
-	"external_backend/queue/mocks"
+	"external-backend/queue/mocks"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

@@ -2,6 +2,7 @@ package queue
 
 import (
 	"common/model"
+	tracing_mocks "common/observability/tracing/mocks"
 	"common/queue/mocks"
 	"context"
 	"encoding/json"
@@ -17,6 +18,7 @@ var mineral = model.Mineral{}
 func Test_mineralPublisher_Publish(t *testing.T) {
 	publisherMock := new(mocks.PublisherMock)
 	publisher := mineralPublisher{
+		tracer:    tracing_mocks.NewTracerMock(),
 		publisher: publisherMock,
 	}
 

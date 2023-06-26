@@ -3,7 +3,7 @@ package handlers
 import (
 	"common/model"
 	"encoding/json"
-	"external_backend/service"
+	"external-backend/service"
 	"net/http"
 )
 
@@ -17,7 +17,7 @@ type mineralHandler struct {
 
 func NewMineralHandler() MineralHandler {
 	return &mineralHandler{
-		service: service.NewMineralService(),
+		service: service.GetMineralService(),
 	}
 }
 

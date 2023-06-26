@@ -1,4 +1,4 @@
-name: go-backend-ci
+name: go-monorepo-ci
 run-name: CI for go-backend project
 on:
   push:
@@ -19,4 +19,5 @@ jobs:
 
       - name: Run tests
         run: |
+          go test -v ./common/...
           go test -v ./external-backend/...
