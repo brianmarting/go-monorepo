@@ -50,7 +50,7 @@ func Test_mineralHandler_Post(t *testing.T) {
 			name: "Should return err on add mineral err",
 			rec:  httptest.NewRecorder(),
 			reqFn: func() *http.Request {
-				return httptest.NewRequest("POST", "/", nil)
+				return httptest.NewRequest("POST", "/", strings.NewReader("{}"))
 			},
 			mockFn: func() *mock.Call {
 				return serviceMock.On("AddMineral", mock.Anything, mineral).Return(errors.New("failed to add mineral"))
