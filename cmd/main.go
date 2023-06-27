@@ -5,6 +5,7 @@ import (
 	"common/observability/tracing"
 	"context"
 	externalbackendcmd "external-backend/cmd"
+	internalbackendcmd "internal-backend/cmd"
 	"os"
 	"os/signal"
 
@@ -25,11 +26,12 @@ func main() {
 	}()
 
 	cmd := &cobra.Command{
-		Short: "external backend cmd",
+		Short: "Go monorepo cmd",
 	}
 	cmd.AddCommand(externalbackendcmd.ExternalBackendCmd(ctx))
+	cmd.AddCommand(internalbackendcmd.InternalBackendCmd(ctx))
 
 	if err := cmd.Execute(); err != nil {
-		log.Info().Err(err).Msg("failed to start external-backend")
+		log.Info().Err(err).Msg("failed to start cmd")
 	}
 }

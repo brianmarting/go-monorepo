@@ -47,10 +47,9 @@ func startGrpcServer() {
 
 	server := googleGrpc.NewServer()
 	pb.RegisterMineralServiceServer(server, grpc.NewMineralGrpcServer())
-	go func() {
-		log.Info().Msg("starting grpc server")
-		if err := server.Serve(listener); err != nil {
-			log.Fatal().Err(err).Msg("failed to start GRPC server")
-		}
-	}()
+
+	log.Info().Msg("starting GRPC server")
+	if err := server.Serve(listener); err != nil {
+		log.Fatal().Err(err).Msg("failed to start GRPC server")
+	}
 }
