@@ -1,4 +1,4 @@
-module common
+module github.com/brianmarting/go-monorepo/common
 
 require (
 	github.com/rabbitmq/amqp091-go v1.8.1
