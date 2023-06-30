@@ -1,12 +1,12 @@
 package queue
 
 import (
-	facadeQueue "common/facade/queue"
-	"common/model"
-	"common/observability/tracing"
-	"common/queue"
 	"context"
 	"encoding/json"
+	facadeQueue "go-monorepo/internal/facade/queue"
+	"go-monorepo/internal/model"
+	"go-monorepo/internal/observability/tracing"
+	"go-monorepo/internal/queue"
 
 	"go.opentelemetry.io/otel/trace"
 )

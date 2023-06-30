@@ -1,11 +1,11 @@
 package grpc
 
 import (
-	"common/model"
-	"common/observability/tracing"
 	"context"
-	pb "external-backend/grpc/generated"
-	"external-backend/service"
+	pb "go-monorepo/external-backend/grpc/generated"
+	"go-monorepo/external-backend/service"
+	"go-monorepo/internal/model"
+	"go-monorepo/internal/observability/tracing"
 
 	"github.com/rs/zerolog/log"
 	"go.opentelemetry.io/otel/trace"
@@ -39,12 +39,12 @@ func handleStreamMsg(stream pb.MineralService_SendStreamingServer, service servi
 	defer span.End()
 
 	if err != nil {
-		log.Info().Err(err).Msg("failed to receive data from grpc endpoint")
+		log.Error().Err(err).Msg("failed to receive data from grpc endpoint")
 		return
 	}
 
 	if err = service.AddMineral(spanCtx, convertToMineral(recv)); err != nil {
-		log.Info().Err(err).Msg("failed to receive data from grpc endpoint")
+		log.Error().Err(err).Msg("failed to receive data from grpc endpoint")
 		return
 	}
 }

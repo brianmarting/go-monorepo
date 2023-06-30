@@ -1,0 +1,39 @@
+receivers:
+  otlp:
+    protocols:
+      http:
+        cors:
+          allowed_origins:
+            - "http://*"
+            - "https://*"
+
+processors:
+  batch:
+
+exporters:
+  otlp:
+    endpoint: jaeger:4317
+    tls:
+      insecure: true
+  logging:
+
+extensions:
+  health_check:
+  pprof:
+  zpages:
+
+service:
+  extensions: [health_check, pprof, zpages]
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlp,logging]
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlp,logging]
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlp]

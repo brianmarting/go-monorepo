@@ -1,10 +1,10 @@
 package service
 
 import (
-	"common/model"
-	"common/observability/tracing"
 	"context"
-	"external-backend/queue"
+	"go-monorepo/external-backend/queue"
+	"go-monorepo/internal/model"
+	"go-monorepo/internal/observability/tracing"
 	"sync"
 
 	"go.opentelemetry.io/otel/trace"

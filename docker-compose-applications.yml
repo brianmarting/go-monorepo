@@ -1,0 +1,37 @@
+services:
+
+  internal-backend:
+    image: internal-backend:latest
+    build:
+      context: .
+      dockerfile: ./build/internal-backend/Dockerfile
+    environment:
+      ENVIRONMENT: prod
+      DB_HOST: psql
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PASSWORD: guest
+      RABBITMQ_USERNAME: guest
+      OTLP_ENDPOINT: otel-collector:4318
+      TRACING_APP_NAME: internal-backend
+    restart: on-failure
+
+  external-backend:
+    image: external-backend:latest
+    build:
+      context: .
+      dockerfile: ./build/external-backend/Dockerfile
+    environment:
+      ENVIRONMENT: prod
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PASSWORD: guest
+      RABBITMQ_USERNAME: guest
+      OTLP_ENDPOINT: otel-collector:4318
+      TRACING_APP_NAME: external-backend
+      REST_PORT: 8000
+      GRPC_PORT: 8100
+    ports:
+      - 8000:8000
+      - 8100:8100
+    restart: on-failure

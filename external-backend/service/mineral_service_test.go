@@ -1,11 +1,11 @@
 package service
 
 import (
-	"common/model"
-	tracing_mocks "common/observability/tracing/mocks"
 	"context"
 	"errors"
-	"external-backend/queue/mocks"
+	"go-monorepo/external-backend/queue/mocks"
+	"go-monorepo/internal/model"
+	tracing_mocks "go-monorepo/internal/observability/tracing/mocks"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

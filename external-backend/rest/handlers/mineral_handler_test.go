@@ -1,9 +1,9 @@
 package handlers
 
 import (
-	"common/model"
 	"errors"
-	"external-backend/service/mocks"
+	"go-monorepo/external-backend/service/mocks"
+	"go-monorepo/internal/model"
 	"net/http"
 	"net/http/httptest"
 	"strings"

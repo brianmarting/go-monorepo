@@ -1,9 +1,9 @@
 package handlers
 
 import (
-	"common/model"
 	"encoding/json"
-	"external-backend/service"
+	"go-monorepo/external-backend/service"
+	"go-monorepo/internal/model"
 	"net/http"
 )
 

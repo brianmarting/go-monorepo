@@ -1,12 +1,12 @@
 package queue
 
 import (
-	"common/model"
-	tracing_mocks "common/observability/tracing/mocks"
-	"common/queue/mocks"
 	"context"
 	"encoding/json"
 	"errors"
+	"go-monorepo/internal/model"
+	tracing_mocks "go-monorepo/internal/observability/tracing/mocks"
+	"go-monorepo/internal/queue/mocks"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

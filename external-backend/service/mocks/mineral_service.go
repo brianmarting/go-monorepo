@@ -1,8 +1,8 @@
 package mocks
 
 import (
-	"common/model"
 	"context"
+	"go-monorepo/internal/model"
 
 	"github.com/stretchr/testify/mock"
 )

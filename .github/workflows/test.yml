@@ -1,12 +1,12 @@
 name: go-monorepo-ci
-run-name: CI for go-backend project
+run-name: CI for go-monorepo project
 on:
   push:
     branches:
       - 'main'
 
 jobs:
-  go-backend-ci:
+  go-monorepo-ci:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repo code
@@ -19,5 +19,4 @@ jobs:
 
       - name: Run tests
         run: |
-          go test -v ./common/...
-          go test -v ./external-backend/...
+          go test -v ./...
