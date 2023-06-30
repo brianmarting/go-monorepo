@@ -23,10 +23,14 @@ func main() {
 		}
 	}()
 
+	go runService()
+
+	<-ctx.Done()
+}
+
+func runService() {
 	mineralService := service.NewMineralService()
 	if err := mineralService.StartConsumingMessages(); err != nil {
 		log.Fatal().Err(err).Msg("failed to start consuming messages from broker")
 	}
-
-	<-ctx.Done()
 }
