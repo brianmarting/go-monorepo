@@ -51,6 +51,7 @@ func handleStreamMsg(stream pb.MineralService_SendStreamingServer, service servi
 
 func convertToMineral(dto *pb.MineralDto) model.Mineral {
 	return model.Mineral{
-		Name: dto.Name,
+		Name:   dto.Name,
+		Amount: int(dto.Amount),
 	}
 }

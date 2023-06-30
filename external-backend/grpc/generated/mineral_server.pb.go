@@ -7,11 +7,10 @@
 package __
 
 import (
-	reflect "reflect"
-	sync "sync"
-
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	reflect "reflect"
+	sync "sync"
 )
 
 const (
@@ -32,7 +31,7 @@ type UUID struct {
 func (x *UUID) Reset() {
 	*x = UUID{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mineral_service_proto_msgTypes[0]
+		mi := &file_mineral_server_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -45,7 +44,7 @@ func (x *UUID) String() string {
 func (*UUID) ProtoMessage() {}
 
 func (x *UUID) ProtoReflect() protoreflect.Message {
-	mi := &file_mineral_service_proto_msgTypes[0]
+	mi := &file_mineral_server_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -58,7 +57,7 @@ func (x *UUID) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UUID.ProtoReflect.Descriptor instead.
 func (*UUID) Descriptor() ([]byte, []int) {
-	return file_mineral_service_proto_rawDescGZIP(), []int{0}
+	return file_mineral_server_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *UUID) GetValue() string {
@@ -73,13 +72,14 @@ type MineralDto struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Name   string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Amount int32  `protobuf:"varint,2,opt,name=amount,proto3" json:"amount,omitempty"`
 }
 
 func (x *MineralDto) Reset() {
 	*x = MineralDto{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mineral_service_proto_msgTypes[1]
+		mi := &file_mineral_server_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -92,7 +92,7 @@ func (x *MineralDto) String() string {
 func (*MineralDto) ProtoMessage() {}
 
 func (x *MineralDto) ProtoReflect() protoreflect.Message {
-	mi := &file_mineral_service_proto_msgTypes[1]
+	mi := &file_mineral_server_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -105,7 +105,7 @@ func (x *MineralDto) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MineralDto.ProtoReflect.Descriptor instead.
 func (*MineralDto) Descriptor() ([]byte, []int) {
-	return file_mineral_service_proto_rawDescGZIP(), []int{1}
+	return file_mineral_server_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *MineralDto) GetName() string {
@@ -113,6 +113,13 @@ func (x *MineralDto) GetName() string {
 		return x.Name
 	}
 	return ""
+}
+
+func (x *MineralDto) GetAmount() int32 {
+	if x != nil {
+		return x.Amount
+	}
+	return 0
 }
 
 type MineralResult struct {
@@ -126,7 +133,7 @@ type MineralResult struct {
 func (x *MineralResult) Reset() {
 	*x = MineralResult{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mineral_service_proto_msgTypes[2]
+		mi := &file_mineral_server_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -139,7 +146,7 @@ func (x *MineralResult) String() string {
 func (*MineralResult) ProtoMessage() {}
 
 func (x *MineralResult) ProtoReflect() protoreflect.Message {
-	mi := &file_mineral_service_proto_msgTypes[2]
+	mi := &file_mineral_server_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -152,7 +159,7 @@ func (x *MineralResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MineralResult.ProtoReflect.Descriptor instead.
 func (*MineralResult) Descriptor() ([]byte, []int) {
-	return file_mineral_service_proto_rawDescGZIP(), []int{2}
+	return file_mineral_server_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *MineralResult) GetResult() string {
@@ -162,45 +169,46 @@ func (x *MineralResult) GetResult() string {
 	return ""
 }
 
-var File_mineral_service_proto protoreflect.FileDescriptor
+var File_mineral_server_proto protoreflect.FileDescriptor
 
-var file_mineral_service_proto_rawDesc = []byte{
-	0x0a, 0x15, 0x6d, 0x69, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x5f, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63,
-	0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x04, 0x67, 0x72, 0x70, 0x63, 0x22, 0x1c, 0x0a,
-	0x04, 0x55, 0x55, 0x49, 0x44, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x01,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x20, 0x0a, 0x0a, 0x4d,
-	0x69, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x44, 0x74, 0x6f, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d,
-	0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x22, 0x27, 0x0a,
-	0x0d, 0x4d, 0x69, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x12, 0x16,
-	0x0a, 0x06, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06,
-	0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x32, 0x4c, 0x0a, 0x0e, 0x4d, 0x69, 0x6e, 0x65, 0x72, 0x61,
-	0x6c, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x3a, 0x0a, 0x0d, 0x53, 0x65, 0x6e, 0x64,
-	0x53, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x69, 0x6e, 0x67, 0x12, 0x10, 0x2e, 0x67, 0x72, 0x70, 0x63,
-	0x2e, 0x4d, 0x69, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x44, 0x74, 0x6f, 0x1a, 0x13, 0x2e, 0x67, 0x72,
-	0x70, 0x63, 0x2e, 0x4d, 0x69, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74,
-	0x22, 0x00, 0x28, 0x01, 0x42, 0x04, 0x5a, 0x02, 0x2e, 0x2f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x33,
+var file_mineral_server_proto_rawDesc = []byte{
+	0x0a, 0x14, 0x6d, 0x69, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x5f, 0x73, 0x65, 0x72, 0x76, 0x65, 0x72,
+	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x04, 0x67, 0x72, 0x70, 0x63, 0x22, 0x1c, 0x0a, 0x04,
+	0x55, 0x55, 0x49, 0x44, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x38, 0x0a, 0x0a, 0x4d, 0x69,
+	0x6e, 0x65, 0x72, 0x61, 0x6c, 0x44, 0x74, 0x6f, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x16, 0x0a, 0x06,
+	0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x05, 0x52, 0x06, 0x61, 0x6d,
+	0x6f, 0x75, 0x6e, 0x74, 0x22, 0x27, 0x0a, 0x0d, 0x4d, 0x69, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x52,
+	0x65, 0x73, 0x75, 0x6c, 0x74, 0x12, 0x16, 0x0a, 0x06, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x32, 0x4c, 0x0a,
+	0x0e, 0x4d, 0x69, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12,
+	0x3a, 0x0a, 0x0d, 0x53, 0x65, 0x6e, 0x64, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x69, 0x6e, 0x67,
+	0x12, 0x10, 0x2e, 0x67, 0x72, 0x70, 0x63, 0x2e, 0x4d, 0x69, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x44,
+	0x74, 0x6f, 0x1a, 0x13, 0x2e, 0x67, 0x72, 0x70, 0x63, 0x2e, 0x4d, 0x69, 0x6e, 0x65, 0x72, 0x61,
+	0x6c, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x22, 0x00, 0x28, 0x01, 0x42, 0x04, 0x5a, 0x02, 0x2e,
+	0x2f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
-	file_mineral_service_proto_rawDescOnce sync.Once
-	file_mineral_service_proto_rawDescData = file_mineral_service_proto_rawDesc
+	file_mineral_server_proto_rawDescOnce sync.Once
+	file_mineral_server_proto_rawDescData = file_mineral_server_proto_rawDesc
 )
 
-func file_mineral_service_proto_rawDescGZIP() []byte {
-	file_mineral_service_proto_rawDescOnce.Do(func() {
-		file_mineral_service_proto_rawDescData = protoimpl.X.CompressGZIP(file_mineral_service_proto_rawDescData)
+func file_mineral_server_proto_rawDescGZIP() []byte {
+	file_mineral_server_proto_rawDescOnce.Do(func() {
+		file_mineral_server_proto_rawDescData = protoimpl.X.CompressGZIP(file_mineral_server_proto_rawDescData)
 	})
-	return file_mineral_service_proto_rawDescData
+	return file_mineral_server_proto_rawDescData
 }
 
-var file_mineral_service_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
-var file_mineral_service_proto_goTypes = []interface{}{
+var file_mineral_server_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_mineral_server_proto_goTypes = []interface{}{
 	(*UUID)(nil),          // 0: grpc.UUID
 	(*MineralDto)(nil),    // 1: grpc.MineralDto
 	(*MineralResult)(nil), // 2: grpc.MineralResult
 }
-var file_mineral_service_proto_depIdxs = []int32{
+var file_mineral_server_proto_depIdxs = []int32{
 	1, // 0: grpc.MineralService.SendStreaming:input_type -> grpc.MineralDto
 	2, // 1: grpc.MineralService.SendStreaming:output_type -> grpc.MineralResult
 	1, // [1:2] is the sub-list for method output_type
@@ -210,13 +218,13 @@ var file_mineral_service_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_mineral_service_proto_init() }
-func file_mineral_service_proto_init() {
-	if File_mineral_service_proto != nil {
+func init() { file_mineral_server_proto_init() }
+func file_mineral_server_proto_init() {
+	if File_mineral_server_proto != nil {
 		return
 	}
 	if !protoimpl.UnsafeEnabled {
-		file_mineral_service_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+		file_mineral_server_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*UUID); i {
 			case 0:
 				return &v.state
@@ -228,7 +236,7 @@ func file_mineral_service_proto_init() {
 				return nil
 			}
 		}
-		file_mineral_service_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+		file_mineral_server_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MineralDto); i {
 			case 0:
 				return &v.state
@@ -240,7 +248,7 @@ func file_mineral_service_proto_init() {
 				return nil
 			}
 		}
-		file_mineral_service_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+		file_mineral_server_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MineralResult); i {
 			case 0:
 				return &v.state
@@ -257,18 +265,18 @@ func file_mineral_service_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_mineral_service_proto_rawDesc,
+			RawDescriptor: file_mineral_server_proto_rawDesc,
 			NumEnums:      0,
 			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_mineral_service_proto_goTypes,
-		DependencyIndexes: file_mineral_service_proto_depIdxs,
-		MessageInfos:      file_mineral_service_proto_msgTypes,
+		GoTypes:           file_mineral_server_proto_goTypes,
+		DependencyIndexes: file_mineral_server_proto_depIdxs,
+		MessageInfos:      file_mineral_server_proto_msgTypes,
 	}.Build()
-	File_mineral_service_proto = out.File
-	file_mineral_service_proto_rawDesc = nil
-	file_mineral_service_proto_goTypes = nil
-	file_mineral_service_proto_depIdxs = nil
+	File_mineral_server_proto = out.File
+	file_mineral_server_proto_rawDesc = nil
+	file_mineral_server_proto_goTypes = nil
+	file_mineral_server_proto_depIdxs = nil
 }
