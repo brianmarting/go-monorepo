@@ -14,24 +14,35 @@ import (
 type MineralServer struct {
 	pb.UnimplementedMineralServiceServer
 
-	tracer  trace.Tracer
-	service service.MineralService
+	doneChan <-chan struct{}
+	tracer   trace.Tracer
+	service  service.MineralService
 }
 
-func NewMineralGrpcServer() *MineralServer {
+func NewMineralGrpcServer(done <-chan struct{}) *MineralServer {
 	return &MineralServer{
-		tracer:  tracing.GetTracer(),
-		service: service.GetMineralService(),
+		doneChan: done,
+		tracer:   tracing.GetTracer(),
+		service:  service.GetMineralService(),
 	}
 }
 
-func (m MineralServer) SendStreaming(stream pb.MineralService_SendStreamingServer) error {
+func (m *MineralServer) SendStreaming(stream pb.MineralService_SendStreamingServer) error {
 	for {
-		handleStreamMsg(stream, m.service)
+		select {
+		case <-m.doneChan:
+			break
+		default:
+		}
+		if err := handleStreamMsg(stream, m.service); err != nil {
+			break
+		}
 	}
+
+	return nil
 }
 
-func handleStreamMsg(stream pb.MineralService_SendStreamingServer, service service.MineralService) {
+func handleStreamMsg(stream pb.MineralService_SendStreamingServer, service service.MineralService) error {
 	recv, err := stream.Recv()
 
 	tracer := tracing.GetTracer()
@@ -40,13 +51,14 @@ func handleStreamMsg(stream pb.MineralService_SendStreamingServer, service servi
 
 	if err != nil {
 		log.Error().Err(err).Msg("failed to receive data from grpc endpoint")
-		return
+		return err
 	}
 
 	if err = service.AddMineral(spanCtx, convertToMineral(recv)); err != nil {
 		log.Error().Err(err).Msg("failed to receive data from grpc endpoint")
-		return
 	}
+
+	return nil
 }
 
 func convertToMineral(dto *pb.MineralDto) model.Mineral {

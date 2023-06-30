@@ -30,7 +30,7 @@ func main() {
 	}()
 
 	go startRestServer()
-	go startGrpcServer()
+	go startGrpcServer(ctx.Done())
 
 	<-ctx.Done()
 }
@@ -46,14 +46,14 @@ func startRestServer() {
 	}
 }
 
-func startGrpcServer() {
+func startGrpcServer(done <-chan struct{}) {
 	listener, err := net.Listen("tcp", fmt.Sprintf(":%s", os.Getenv("GRPC_PORT")))
 	if err != nil {
 		log.Fatal().Err(err).Msg("failed to start grpc server listener")
 	}
 
 	server := googleGrpc.NewServer()
-	pb.RegisterMineralServiceServer(server, grpc.NewMineralGrpcServer())
+	pb.RegisterMineralServiceServer(server, grpc.NewMineralGrpcServer(done))
 
 	log.Info().Msg("starting GRPC server")
 	if err := server.Serve(listener); err != nil {
