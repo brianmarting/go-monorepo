@@ -4,7 +4,9 @@ services:
     image: internal-backend:latest
     build:
       context: .
-      dockerfile: ./build/internal-backend/Dockerfile
+      dockerfile: ./build/Dockerfile
+      args:
+        app: internal-backend
     environment:
       ENVIRONMENT: prod
       DB_HOST: psql
@@ -21,7 +23,9 @@ services:
     image: external-backend:latest
     build:
       context: .
-      dockerfile: ./build/external-backend/Dockerfile
+      dockerfile: ./build/Dockerfile
+      args:
+        app: external-backend
     environment:
       ENVIRONMENT: prod
       RABBITMQ_HOST: rabbitmq

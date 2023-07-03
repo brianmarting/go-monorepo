@@ -1,0 +1,43 @@
+services:
+
+  psql-idp:
+    image: postgres:latest
+    restart: always
+    volumes:
+      - ./migrations/idp:/docker-entrypoint-initdb.d/
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      PGPORT: 5433
+    ports:
+      - 5433:5433
+
+  identity-provider-service:
+    image: identity-provider-service:latest
+    build:
+      context: .
+      dockerfile: ./build/Dockerfile-debug
+      args:
+        app: identity-provider
+    environment:
+      ENVIRONMENT: prod
+      DB_HOST: psql-idp
+      DB_PORT: 5433
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      IPS_PORT: 8900
+      ACCESS_TOKEN_SECRET: atsecret
+      REFRESH_TOKEN_SECRET: rtsecret
+      OTLP_ENDPOINT: otel-collector:4318
+      TRACING_APP_NAME: identity-provider-service
+#    security_opt:
+#      - apparmor:unconfined
+#      - seccomp:unconfined
+#    cap_add:
+#      - SYS_PTRACE
+    ports:
+      - 8900:8900
+#      - 40000:40000
+    restart: on-failure
+

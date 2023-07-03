@@ -8,4 +8,4 @@ CREATE TABLE users (
                          token_version BIGSERIAL NOT NULL
 );
 
-INSERT INTO users VALUES (1, '4f017282-48b1-49e4-b98f-3f1ac538ff42', 'john', 'test', 1);
+INSERT INTO users VALUES (1, '4f017282-48b1-49e4-b98f-3f1ac538ff42', 'john', 'somepwd', 1);

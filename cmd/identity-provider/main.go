@@ -29,9 +29,10 @@ func main() {
 		handler := handlers.NewHandler()
 		handler.CreateAllRoutes()
 
-		log.Info().Msg("starting idp service")
+		port := os.Getenv("IPS_PORT")
+		log.Info().Msg(fmt.Sprintf("starting idp service on %s", port))
 
-		if err := http.ListenAndServe(fmt.Sprintf(":%s", os.Getenv("IPS_PORT")), handler); err != nil {
+		if err := http.ListenAndServe(fmt.Sprintf(":%s", port), handler); err != nil {
 			log.Fatal().Err(err).Msg("failed to start idp service")
 		}
 	}()

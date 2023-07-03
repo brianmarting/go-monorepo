@@ -1,6 +1,8 @@
 package psql
 
 import (
+	"fmt"
+	"github.com/rs/zerolog/log"
 	"go-monorepo/identity-provider/persistence/db"
 	"go-monorepo/internal/model"
 
@@ -31,6 +33,7 @@ func (u userStore) GetByExternalId(id string) (model.User, error) {
 
 func (u userStore) Create(user model.User) error {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), 12)
+	log.Info().Msg(fmt.Sprintf("hash pwd: %s", hashedPassword))
 	if err != nil {
 		return err
 	}

@@ -3,6 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"go-monorepo/identity-provider/service"
 	"go-monorepo/internal/model"
 	"net/http"
@@ -85,7 +86,7 @@ func CreateAccessToken(user model.User) ([]byte, error) {
 	}
 
 	return json.Marshal(model.AccessToken{
-		AccessToken: signedAccessToken,
+		AccessToken: fmt.Sprintf("Bearer %s", signedAccessToken),
 	})
 }
 
