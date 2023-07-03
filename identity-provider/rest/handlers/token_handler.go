@@ -13,8 +13,8 @@ import (
 )
 
 var (
-	accessTokenSecret  = os.Getenv("ACCESS_TOKEN_SECRET")
-	refreshTokenSecret = os.Getenv("REFRESH_TOKEN_SECRET")
+	accessTokenSecret  = []byte(os.Getenv("ACCESS_TOKEN_SECRET"))
+	refreshTokenSecret = []byte(os.Getenv("REFRESH_TOKEN_SECRET"))
 	refreshToken       = "rt"
 )
 

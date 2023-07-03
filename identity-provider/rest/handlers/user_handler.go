@@ -1,9 +1,7 @@
 package handlers
 
 import (
-	"bytes"
 	"encoding/json"
-	"errors"
 	"go-monorepo/identity-provider/service"
 	"go-monorepo/internal/model"
 	"net/http"
@@ -67,13 +65,8 @@ func (h userHandler) Login() http.HandlerFunc {
 			return
 		}
 
-		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), 12)
-		if err != nil {
+		if err := bcrypt.CompareHashAndPassword([]byte(dbUser.Password), []byte(user.Password)); err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
-			return
-		}
-		if !bytes.Equal(hashedPassword, []byte(dbUser.Password)) {
-			http.Error(w, errors.New("invalid password").Error(), http.StatusBadRequest)
 			return
 		}
 

@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"bytes"
+	"encoding/json"
 	"errors"
 	"go-monorepo/identity-provider/service/mocks"
 	"go-monorepo/internal/model"
@@ -17,7 +19,7 @@ var user = model.User{
 	Id:           32,
 	ExternalId:   "dq9b5f7e-61e6-480e-91bb-269f7a929622",
 	Name:         "John",
-	Password:     "somepwd",
+	Password:     "$2a$12$yG39JPipP4YHNa3/IxcbAO38gK89UFeDqml1UZNlpnujhYLbiSOvi",
 	TokenVersion: 1,
 }
 
@@ -99,6 +101,8 @@ func Test_userHandler_Login(t *testing.T) {
 	handler := userHandler{
 		service: serviceMock,
 	}
+	accessTokenSecret = []byte("someatkey")
+	refreshTokenSecret = []byte("somertkey")
 
 	tests := []struct {
 		name         string
@@ -108,19 +112,79 @@ func Test_userHandler_Login(t *testing.T) {
 		expectResult bool
 		expectError  bool
 	}{
-		//{
-		//	name: "Should login",
-		//	rec:  httptest.NewRecorder(),
-		//	reqFn: func() *http.Request {
-		//		return httptest.NewRequest("POST", "/", strings.NewReader("{}"))
-		//	},
-		//	mockFn: func() *mock.Call {
-		//		return serviceMock.
-		//			On("GetByExternalId", mock.Anything).
-		//			Return(user, nil)
-		//	},
-		//	expectResult: true,
-		//},
+		{
+			name: "Should login",
+			rec:  httptest.NewRecorder(),
+			reqFn: func() *http.Request {
+				var buf bytes.Buffer
+				_ = json.NewEncoder(&buf).Encode(model.User{
+					Id:           32,
+					ExternalId:   "dq9b5f7e-61e6-480e-91bb-269f7a929622",
+					Name:         "John",
+					Password:     "somepwd",
+					TokenVersion: 1,
+				})
+				return httptest.NewRequest("POST", "/", &buf)
+			},
+			mockFn: func() *mock.Call {
+				return serviceMock.
+					On("GetByExternalId", mock.Anything).
+					Return(user, nil)
+			},
+			expectResult: true,
+		},
+		{
+			name: "Should return err on decode fail",
+			rec:  httptest.NewRecorder(),
+			reqFn: func() *http.Request {
+				return httptest.NewRequest("POST", "/", nil)
+			},
+			expectError: true,
+		},
+		{
+			name: "Should return err on service call err",
+			rec:  httptest.NewRecorder(),
+			reqFn: func() *http.Request {
+				var buf bytes.Buffer
+				_ = json.NewEncoder(&buf).Encode(model.User{
+					Id:           32,
+					ExternalId:   "dq9b5f7e-61e6-480e-91bb-269f7a929622",
+					Name:         "John",
+					Password:     "somepwd",
+					TokenVersion: 1,
+				})
+				return httptest.NewRequest("POST", "/", &buf)
+			},
+			mockFn: func() *mock.Call {
+				return serviceMock.
+					On("GetByExternalId", mock.Anything).
+					Return(model.User{}, errors.New("fail"))
+			},
+			expectError: true,
+		},
+		{
+			name: "Should return err on compare hash and password err",
+			rec:  httptest.NewRecorder(),
+			reqFn: func() *http.Request {
+				var buf bytes.Buffer
+				_ = json.NewEncoder(&buf).Encode(model.User{
+					Id:           32,
+					ExternalId:   "dq9b5f7e-61e6-480e-91bb-269f7a929622",
+					Name:         "John",
+					Password:     "somepwd",
+					TokenVersion: 1,
+				})
+				return httptest.NewRequest("POST", "/", &buf)
+			},
+			mockFn: func() *mock.Call {
+				return serviceMock.
+					On("GetByExternalId", mock.Anything).
+					Return(model.User{
+						Password: "",
+					}, nil)
+			},
+			expectError: true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -140,6 +204,7 @@ func Test_userHandler_Login(t *testing.T) {
 			if tt.expectResult {
 				assert.Equal(t, http.StatusOK, tt.rec.Code)
 				assert.NotNil(t, tt.rec.Body)
+				assert.NotNil(t, tt.rec.Header().Get("Set-Cookie"))
 			}
 			serviceMock.AssertExpectations(t)
 			mockCall.Unset()
