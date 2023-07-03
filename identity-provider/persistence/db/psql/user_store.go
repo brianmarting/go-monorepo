@@ -2,9 +2,10 @@ package psql
 
 import (
 	"fmt"
-	"github.com/rs/zerolog/log"
 	"go-monorepo/identity-provider/persistence/db"
 	"go-monorepo/internal/model"
+
+	"github.com/rs/zerolog/log"
 
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
