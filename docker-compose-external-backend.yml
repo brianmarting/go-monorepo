@@ -3,7 +3,7 @@ services:
   external-backend:
     image: external-backend:latest
     build:
-      context: cmd/external-backend
+      context: .
       dockerfile: ./build/Dockerfile
       args:
         app: external-backend

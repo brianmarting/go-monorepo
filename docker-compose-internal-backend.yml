@@ -3,7 +3,7 @@ services:
   internal-backend:
     image: internal-backend:latest
     build:
-      context: cmd/internal-backend
+      context: .
       dockerfile: ./build/Dockerfile
       args:
         app: internal-backend

@@ -3,7 +3,7 @@ services:
   identity-provider-service:
     image: identity-provider-service:latest
     build:
-      context: cmd/identity-provider
+      context: .
       dockerfile: ./build/Dockerfile
       args:
         app: identity-provider
@@ -32,7 +32,7 @@ services:
     image: postgres:latest
     restart: always
     volumes:
-      - ../../migrations/idp:/docker-entrypoint-initdb.d/
+      - ./migrations/idp:/docker-entrypoint-initdb.d/
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
