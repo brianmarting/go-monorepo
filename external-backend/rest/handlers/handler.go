@@ -28,8 +28,9 @@ func NewHandler() Handler {
 }
 
 func (h *handler) CreateAllRoutes() {
-	h.Use(otelchi.Middleware("go-monorepo/external-backend", otelchi.WithChiRoutes(h)))
 	h.Use(middleware.IsAuthenticated())
+	h.Use(middleware.TimeoutMiddleware)
+	h.Use(otelchi.Middleware("go-monorepo/external-backend", otelchi.WithChiRoutes(h)))
 
 	h.Route("/mineral", func(router chi.Router) {
 		router.Post("/deposit", h.mineralHandler.Post())
