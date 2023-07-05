@@ -1,0 +1,27 @@
+services:
+
+  internal-backend:
+    image: internal-backend:latest
+    build:
+      context: cmd/internal-backend
+      dockerfile: ./build/Dockerfile
+      args:
+        app: internal-backend
+    environment:
+      ENVIRONMENT: prod
+      DB_HOST: psql
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PASSWORD: guest
+      RABBITMQ_USERNAME: guest
+      OTLP_ENDPOINT: otel-collector:4318
+      TRACING_APP_NAME: internal-backend
+    #    security_opt:
+    #      - apparmor:unconfined
+    #      - seccomp:unconfined
+    #    cap_add:
+    #      - SYS_PTRACE
+    #    ports:
+    #      - 40000:40000
+    restart: on-failure

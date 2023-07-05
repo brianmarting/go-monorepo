@@ -19,7 +19,7 @@ var user = model.User{
 	Id:           32,
 	ExternalId:   "dq9b5f7e-61e6-480e-91bb-269f7a929622",
 	Name:         "John",
-	Password:     "$2a$12$yG39JPipP4YHNa3/IxcbAO38gK89UFeDqml1UZNlpnujhYLbiSOvi",
+	Password:     "somepwd",
 	TokenVersion: 1,
 }
 

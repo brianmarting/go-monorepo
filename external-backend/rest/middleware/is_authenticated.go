@@ -26,19 +26,19 @@ type authenticator struct {
 }
 
 func (a authenticator) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	authorization := r.Header.Get("authorization")
+	authorization := r.Header.Get("Authorization")
 
 	if authorization == "" {
 		http.Error(w, "unauthorized", http.StatusUnauthorized)
 		return
 	}
 
-	request, err := http.NewRequest("POST", fmt.Sprintf("%s:%s", ipsHost, ipsPort), nil)
+	request, err := http.NewRequest("POST", fmt.Sprintf("http://%s:%s/user/token/validate", ipsHost, ipsPort), nil)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
 	}
-	request.Header.Add("authorization", authorization)
+	request.Header.Add("Authorization", authorization)
 
 	response, err := a.client.Do(request)
 	if err != nil {

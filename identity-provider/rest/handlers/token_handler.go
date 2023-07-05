@@ -8,6 +8,7 @@ import (
 	"go-monorepo/internal/model"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -20,6 +21,7 @@ var (
 )
 
 type TokenHandler interface {
+	Validate() http.HandlerFunc
 	PostRefreshToken() http.HandlerFunc
 }
 
@@ -30,6 +32,41 @@ type tokenHandler struct {
 func NewTokenHandler() TokenHandler {
 	return &tokenHandler{
 		userService: service.NewUserService(),
+	}
+}
+
+func (t tokenHandler) Validate() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		token := r.Header.Get("Authorization")
+		if token == "" {
+			http.Error(
+				w,
+				errors.New("no token is present").Error(),
+				http.StatusBadRequest,
+			)
+			return
+		}
+
+		rawToken := strings.Split(token, " ")
+		if len(rawToken) < 2 {
+			http.Error(
+				w,
+				errors.New("invalid token").Error(),
+				http.StatusBadRequest,
+			)
+			return
+		}
+
+		if _, err := parseToken(rawToken[1], accessTokenSecret); err != nil {
+			http.Error(
+				w,
+				fmt.Errorf("invalid token: %v", err).Error(),
+				http.StatusBadRequest,
+			)
+			return
+		}
+
+		w.WriteHeader(200)
 	}
 }
 
@@ -94,7 +131,7 @@ func signAccessToken(user model.User) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"id":   user.ExternalId,
 		"name": user.Name,
-		"exp":  time.Now().Add(time.Hour * 24).String(),
+		"exp":  time.Now().Add(time.Minute * 15).Unix(),
 	})
 	return token.SignedString(accessTokenSecret)
 }
@@ -103,7 +140,7 @@ func signRefreshToken(user model.User) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"id":           user.ExternalId,
 		"tokenVersion": user.TokenVersion,
-		"exp":          time.Now().Add(time.Hour * 24).String(),
+		"exp":          time.Now().Add(time.Hour * 24).Unix(),
 	})
 	return token.SignedString(refreshTokenSecret)
 }
@@ -114,13 +151,7 @@ func retrieveClaimsFromRequest(r *http.Request) (jwt.MapClaims, error) {
 		return nil, err
 	}
 
-	token, err := jwt.Parse(cookie.String(), func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, errors.New("failed to validate token")
-		}
-
-		return []byte(refreshTokenSecret), nil
-	})
+	token, err := parseToken(cookie.String(), refreshTokenSecret)
 	if err != nil {
 		return nil, err
 	}
@@ -130,4 +161,14 @@ func retrieveClaimsFromRequest(r *http.Request) (jwt.MapClaims, error) {
 		return nil, errors.New("failed to retrieve data from claims")
 	}
 	return claims, nil
+}
+
+func parseToken(tokenString string, secret []byte) (*jwt.Token, error) {
+	return jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, errors.New("failed to validate token")
+		}
+
+		return secret, nil
+	})
 }

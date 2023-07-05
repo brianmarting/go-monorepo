@@ -32,7 +32,8 @@ func (h handler) CreateAllRoutes() {
 		router.Post("/login", h.userHandler.Login())
 		router.Post("/create", h.userHandler.CreateUser())
 		router.Route("/token", func(router chi.Router) {
-			router.Get("/refresh/", h.tokenHandler.PostRefreshToken())
+			router.Post("/validate", h.tokenHandler.Validate())
+			router.Post("/refresh", h.tokenHandler.PostRefreshToken())
 		})
 	})
 }

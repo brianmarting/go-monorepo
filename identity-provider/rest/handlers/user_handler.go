@@ -2,12 +2,12 @@ package handlers
 
 import (
 	"encoding/json"
+	"errors"
 	"go-monorepo/identity-provider/service"
 	"go-monorepo/internal/model"
 	"net/http"
 
 	"github.com/rs/zerolog/log"
-	"golang.org/x/crypto/bcrypt"
 )
 
 type UserHandler interface {
@@ -65,8 +65,8 @@ func (h userHandler) Login() http.HandlerFunc {
 			return
 		}
 
-		if err := bcrypt.CompareHashAndPassword([]byte(dbUser.Password), []byte(user.Password)); err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
+		if dbUser.Password != user.Password {
+			http.Error(w, errors.New("invalid password").Error(), http.StatusBadRequest)
 			return
 		}
 

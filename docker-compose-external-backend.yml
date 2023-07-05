@@ -1,0 +1,30 @@
+services:
+
+  external-backend:
+    image: external-backend:latest
+    build:
+      context: cmd/external-backend
+      dockerfile: ./build/Dockerfile
+      args:
+        app: external-backend
+    environment:
+      ENVIRONMENT: prod
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PASSWORD: guest
+      RABBITMQ_USERNAME: guest
+      OTLP_ENDPOINT: otel-collector:4318
+      TRACING_APP_NAME: external-backend
+      REST_PORT: 8000
+      GRPC_PORT: 8100
+      IPS_HOST: identity-provider-service
+      IPS_PORT: 8900
+    #    security_opt:
+    #      - apparmor:unconfined
+    #      - seccomp:unconfined
+    #    cap_add:
+    #      - SYS_PTRACE
+    ports:
+      - 8000:8000
+      - 8100:8100
+    #      - 40000:40000
+    restart: on-failure

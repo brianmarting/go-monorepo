@@ -1,0 +1,22 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="go external-backend" type="GoApplicationRunConfiguration" factoryName="Go Application">
+    <module name="go-monorepo" />
+    <working_directory value="$PROJECT_DIR$" />
+    <envs>
+      <env name="ENVIRONMENT" value="prod" />
+      <env name="GRPC_PORT" value="8100" />
+      <env name="IPS_HOST" value="localhost" />
+      <env name="IPS_PORT" value="8900" />
+      <env name="OTLP_ENDPOINT" value="localhost:4318" />
+      <env name="RABBITMQ_HOST" value="localhost" />
+      <env name="RABBITMQ_PASSWORD" value="guest" />
+      <env name="RABBITMQ_USERNAME" value="guest" />
+      <env name="REST_PORT" value="8000" />
+      <env name="TRACING_APP_NAME" value="external-backend" />
+    </envs>
+    <kind value="FILE" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$/cmd/external-backend/main.go" />
+    <method v="2" />
+  </configuration>
+</component>

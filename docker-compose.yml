@@ -20,11 +20,6 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:15672"]
-      interval: 20s
-      timeout: 10s
-      retries: 3
 
   otel-collector:
     image: otel/opentelemetry-collector:latest-arm64

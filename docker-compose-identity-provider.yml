@@ -1,23 +1,10 @@
 services:
 
-  psql-idp:
-    image: postgres:latest
-    restart: always
-    volumes:
-      - ./migrations/idp:/docker-entrypoint-initdb.d/
-    environment:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_DB: postgres
-      PGPORT: 5433
-    ports:
-      - 5433:5433
-
   identity-provider-service:
     image: identity-provider-service:latest
     build:
-      context: .
-      dockerfile: ./build/Dockerfile-debug
+      context: cmd/identity-provider
+      dockerfile: ./build/Dockerfile
       args:
         app: identity-provider
     environment:
@@ -41,3 +28,15 @@ services:
 #      - 40000:40000
     restart: on-failure
 
+  psql-idp:
+    image: postgres:latest
+    restart: always
+    volumes:
+      - ../../migrations/idp:/docker-entrypoint-initdb.d/
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      PGPORT: 5433
+    ports:
+      - 5433:5433

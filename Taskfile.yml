@@ -1,14 +1,24 @@
 version: 3
 
 tasks:
-  apps:
+  backends:
     cmds:
-      - docker-compose -f docker-compose-applications.yml up
+      - docker-compose -f docker-compose-external-backend.yml -f docker-compose-internal-backend.yml up
+
+  external-backend:
+    cmds:
+      - docker-compose -f docker-compose-external-backend.yml up
 
   idp:
     cmds:
-      - docker-compose -f docker-compose-idp.yml up
+      - docker-compose -f docker-compose-identity-provider.yml up
 
   other:
     cmds:
       - docker-compose up
+
+  all:
+    cmds:
+      - task other
+      - task idp
+      - task apps
