@@ -10,7 +10,7 @@ func TimeoutMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		done := make(chan struct{})
 
-		ctx, cancel := context.WithTimeout(r.Context(), time.Second*5)
+		ctx, cancel := context.WithTimeout(r.Context(), time.Second*10)
 		defer cancel()
 
 		go func() {

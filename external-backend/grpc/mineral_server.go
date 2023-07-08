@@ -28,33 +28,38 @@ func NewMineralGrpcServer(done <-chan struct{}) *MineralServer {
 }
 
 func (m *MineralServer) SendStreaming(stream pb.MineralService_SendStreamingServer) error {
+	msgsChan := make(chan *pb.MineralDto)
+
+	go func() {
+		for {
+			recv, err := stream.Recv()
+			if err != nil {
+				log.Error().Msg("failed to receive msg from grpc stream")
+				return
+			}
+
+			msgsChan <- recv
+		}
+	}()
+
 	for {
 		select {
 		case <-m.doneChan:
-			break
-		default:
-		}
-		if err := handleStreamMsg(stream, m.service); err != nil {
-			break
+			return nil
+		case msg := <-msgsChan:
+			if err := handleStreamMsg(msg, m.service); err != nil {
+				log.Error().Err(err)
+			}
 		}
 	}
-
-	return nil
 }
 
-func handleStreamMsg(stream pb.MineralService_SendStreamingServer, service service.MineralService) error {
-	recv, err := stream.Recv()
-
+func handleStreamMsg(recv *pb.MineralDto, service service.MineralService) error {
 	tracer := tracing.GetTracer()
 	spanCtx, span := tracer.Start(context.Background(), "receive-mineral-msg-grpc-stream")
 	defer span.End()
 
-	if err != nil {
-		log.Error().Err(err).Msg("failed to receive data from grpc endpoint")
-		return err
-	}
-
-	if err = service.AddMineral(spanCtx, convertToMineral(recv)); err != nil {
+	if err := service.AddMineral(spanCtx, convertToMineral(recv)); err != nil {
 		log.Error().Err(err).Msg("failed to receive data from grpc endpoint")
 	}
 
