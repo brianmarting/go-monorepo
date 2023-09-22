@@ -5,6 +5,10 @@ tasks:
     cmds:
       - docker-compose -f docker-compose-external-backend.yml -f docker-compose-internal-backend.yml up
 
+  internal-backend:
+    cmds:
+      - docker-compose -f docker-compose-internal-backend.yml up
+
   external-backend:
     cmds:
       - docker-compose -f docker-compose-external-backend.yml up
@@ -21,4 +25,4 @@ tasks:
     cmds:
       - task other
       - task idp
-      - task apps
+      - task backends

@@ -75,24 +75,6 @@ func (m mineralService) StartConsumingMessages() error {
 	return nil
 }
 
-func createContextFromMsgHeaders(msg commonQueue.Message) context.Context {
-	headers := msg.GetHeaders()
-
-	traceIdHeader := headers[tracing.TraceIdHeader]
-	traceId, isCorrectType := traceIdHeader.(string)
-	if !isCorrectType {
-		return context.Background()
-	}
-
-	spanIdHeader := headers[tracing.SpanIdHeader]
-	spanId, isCorrectType := spanIdHeader.(string)
-	if !isCorrectType {
-		return context.Background()
-	}
-
-	return tracing.CreateSpanContextFromTraceAndSpanId(traceId, spanId)
-}
-
 func nackMsg(msg commonQueue.Message) {
 	if err := msg.Nack(); err != nil {
 		log.Error().Err(err).Msg("failed to nack msg")

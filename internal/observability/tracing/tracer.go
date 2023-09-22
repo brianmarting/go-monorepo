@@ -12,6 +12,6 @@ import (
 func GetTracer() trace.Tracer {
 	return otel.GetTracerProvider().Tracer(
 		os.Getenv("TRACING_APP_NAME"),
-		oteltrace.WithInstrumentationVersion(otelcontrib.SemVersion()),
+		oteltrace.WithInstrumentationVersion(otelcontrib.Version()),
 	)
 }

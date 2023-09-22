@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"context"
+	"github.com/rs/zerolog/log"
 	"net/http"
 	"time"
 )
@@ -23,7 +24,9 @@ func TimeoutMiddleware(next http.Handler) http.Handler {
 			return
 		case <-ctx.Done():
 			w.WriteHeader(500)
-			w.Write([]byte(`{"message": "request timed out"}`))
+			if _, err := w.Write([]byte(`{"message": "request timed out"}`)); err != nil {
+				log.Error().Msg("request timed out")
+			}
 		}
 	})
 }
