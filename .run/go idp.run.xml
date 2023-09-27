@@ -9,7 +9,7 @@
       <env name="DB_PORT" value="5433" />
       <env name="DB_USERNAME" value="postgres" />
       <env name="ENVIRONMENT" value="prod" />
-      <env name="IPS_PORT" value="8900" />
+      <env name="IDP_PORT" value="8900" />
       <env name="OTLP_ENDPOINT" value="localhost:4318" />
       <env name="REFRESH_TOKEN_SECRET" value="rtsecret" />
       <env name="TRACING_APP_NAME" value="identity-provider-service " />

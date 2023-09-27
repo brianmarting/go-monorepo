@@ -10,8 +10,8 @@ import (
 )
 
 var (
-	ipsHost = os.Getenv("IPS_HOST")
-	ipsPort = os.Getenv("IPS_PORT")
+	ipsHost = os.Getenv("IDP_HOST")
+	ipsPort = os.Getenv("IDP_PORT")
 )
 
 func IsAuthenticated() func(next http.Handler) http.Handler {

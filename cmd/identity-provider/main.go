@@ -29,7 +29,7 @@ func main() {
 		handler := handlers.NewHandler()
 		handler.CreateAllRoutes()
 
-		port := os.Getenv("IPS_PORT")
+		port := os.Getenv("IDP_PORT")
 		log.Info().Msg(fmt.Sprintf("starting idp service on %s", port))
 
 		if err := http.ListenAndServe(fmt.Sprintf(":%s", port), handler); err != nil {

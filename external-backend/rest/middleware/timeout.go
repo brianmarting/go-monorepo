@@ -23,7 +23,7 @@ func TimeoutMiddleware(next http.Handler) http.Handler {
 		case <-done:
 			return
 		case <-ctx.Done():
-			w.WriteHeader(500)
+			w.WriteHeader(502)
 			if _, err := w.Write([]byte(`{"message": "request timed out"}`)); err != nil {
 				log.Error().Msg("request timed out")
 			}

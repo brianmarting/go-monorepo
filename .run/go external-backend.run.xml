@@ -5,8 +5,8 @@
     <envs>
       <env name="ENVIRONMENT" value="prod" />
       <env name="GRPC_PORT" value="8100" />
-      <env name="IPS_HOST" value="localhost" />
-      <env name="IPS_PORT" value="8900" />
+      <env name="IDP_HOST" value="localhost" />
+      <env name="IDP_PORT" value="8900" />
       <env name="OTLP_ENDPOINT" value="localhost:4318" />
       <env name="RABBITMQ_HOST" value="localhost" />
       <env name="RABBITMQ_PASSWORD" value="guest" />
